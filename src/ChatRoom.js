@@ -7,7 +7,7 @@ import Linkify from 'react-linkify';
 class ChatRoom extends React.Component{
   constructor(props){
     super(props);
-    this.state = {newMessage : '', allMessages: [],};
+    this.state = {newMessage : '', allMessages: []};
 
     this.inputValue = this.inputValue.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -43,6 +43,7 @@ class ChatRoom extends React.Component{
       return;
     } else if(this.state.newMessage.length === 0){
       this.setState({infoMsg: 'The message should be at least 1 character long'});
+      return;
     }
 
     this.socket.emit('message', {
@@ -58,10 +59,17 @@ class ChatRoom extends React.Component{
   renderMessage(){
     //console.log('renderMessage');
     let {allMessages} = this.state;
+
+    const componentDecorator = (href, text, key) => (
+      <a href={href} key={key} target="_blank">
+        {text}
+      </a>
+    );
+
     return allMessages.map(({username, content}, idx) =>(
       <div key = {idx}>
          <span style = {{color: 'blue'}}>{username}:</span>
-        <span style = {{color: 'red'}}><Linkify>{emojify(content)}</Linkify></span>
+        <span style = {{color: 'red'}}><Linkify componentDecorator={componentDecorator} >{emojify(content)}</Linkify></span>
       </div>
     ));
 
@@ -76,9 +84,11 @@ class ChatRoom extends React.Component{
             <h1>Welcome {this.props.userName}</h1>
           </div>
           <div className = 'chatWindow'>
-            {this.renderMessage()}
-          </div>
+            <div className = 'chatText'>
+              {this.renderMessage()}
+            </div>
             <p>{this.state.infoMsg}</p>
+          </div>
           <input className = 'chatBox'
           placeholder ='Write you chat message here...'
           onChange = {this.inputValue}

@@ -13,7 +13,7 @@ class Login extends React.Component {
     }   
 
     onLogOut(){
-        this.setState({validName:false, userName: ''}); 
+        this.setState({validName:false, userName: '', infoMsg:''}); 
       }
       
     onSubmit(e){
@@ -23,7 +23,9 @@ class Login extends React.Component {
             let nameRegex = /^[A-ZÅÄÖa-zåäö\d\s-_]{1,12}$/;
             let valid = nameRegex.test(this.state.userName)
             if(valid){
-            this.setState({validName: true});
+                this.setState({validName: true});
+            } else{
+                this.setState({infoMsg: 'The username should be max 12 character long'});
             }
         }   
     }
@@ -55,12 +57,12 @@ class Login extends React.Component {
                        onChange = {this.onChange}
                        value = {this.state.userName}
                        required = 'required'
-                      
                        placeholder ='Username max 12 characters'
                        ></input>
                        <button onClick = {this.onSubmit}>LOG IN</button>
                    </form>
                </div>
+               <p>{this.state.infoMsg}</p>
            </div>
             )
         }
