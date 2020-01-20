@@ -17,12 +17,12 @@ class ChatRoom extends React.Component{
   componentDidMount(){ 
     this.socket = io('http://3.120.96.16:3000');
     this.socket.on('messages',(messages) => {
-      //console.log(messages);
+      console.log(messages);
       this.setState({allMessages: messages})
       });
       
     this.socket.on('new_message', (message) =>{
-      //console.log("New message: "+ message);
+      console.log("New message: "+ message);
       this.setState({allMessages: [...this.state.allMessages, message]
       });
     });
